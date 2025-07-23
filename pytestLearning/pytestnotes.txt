@@ -1,0 +1,35 @@
+"Pytest is a testing engine on which we write Playwright test cases"
+""Pytest is a testing framework in which we write test code, and Playwright is a browser automation library that can be used within pytest to perform end-to-end tests.""
+
+To break it down:
+Pytest → A test runner and framework that helps organize, run, and report on test cases.
+
+Playwright → A browser automation tool used for UI testing.
+
+Together: You write your test scripts using Playwright APIs inside Python functions, and use pytest to execute and manage those tests.
+
+if you want to see the output or print statement
+you have to use command = "pytest -s"
+
+What is setup and teardown setup in pytest using python fixtures with yield keyword?
+
+
+
+@pytest.fixture(scope="function") # runs each time when it called in test each test file
+def beforeEveryFunction():
+    print("This is a setup that runs before every function")
+    # Code before yield will run before the test function and kown as setup
+    yield # This yield statement allows you to run some code before and after the test function
+    # Code after yield will run after the test function completes and known as teardown
+    print("This is a teardown that runs after every function")
+    return "passed"  # This return value can be used in the test function that uses this fixture
+
+
+how to skip any test?
+we have @pytest.mark.skip
+@pytest.mark.skipif
+
+command to run a marked test fucntion?
+pytest -m markname like skip
+pytest -m skip 
+

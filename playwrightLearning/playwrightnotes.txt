@@ -1,0 +1,78 @@
+CODEGEN TOOL in Playwright:
+Helps to automatically build all the code steps. Around 70-80% its follows standard way of code.
+
+Summary Table: 
+Playwright Engine	Powered Browsers	                    Cross-platform?
+1. chromium	        Chrome, Edge, Brave, Opera, Vivaldi	    ✅ Windows/Linux/macOS
+2. firefox	        Firefox	                                ✅ Windows/Linux/macOS
+3. webkit	        Safari	                                ✅ Windows/Linux/macOS (uses patched WebKit for non-Mac)
+
+
+Page fixture > Execution flow:
+browser_name (default: 'chromium')
+        ↓
+browser_type → browser.launch()
+        ↓
+context = browser.new_context()
+        ↓
+page = context.new_page()
+
+Default Values Used by page fixture:
+Browser: Chromium
+Mode: Headless
+Context: Fresh private context
+Page: New tab per test
+
+
+Core Locators:
+get_by_label() # 
+get_by_role()
+locator() # with this only we use filter() method explicitly
+get_by_placeholder()
+on() # this methods helps in handling alert box.
+once() # same as above
+frame_locator() # to handle iframes in html
+pause() # you can use this for debugging purpose: It will open another window -> Playwright Inspector 
+sleep() # kind of slow down the complete Execution
+
+
+Alerts:
+We can not directly handle alerts because its not html. its a js events.
+
+get_by_label() limitation:
+1. if the element is in the label tag like below then only this will work correctly:
+    <label> username <input/> </label>
+
+2. if the label for = "" == input id = "", like below:
+    <label class="dynamic-form-control-label" for="username">User Name</label>
+    <input pinputtext="" type="text" autocomplete="off" class="p-inputtext p-component p-element ng-dirty ng-valid p-filled ng-touched" id="username" required="true">
+
+✅ Example: Verify Exact URL
+def test_verify_url(page):
+    page.goto("https://example.com")
+    assert page.url == "https://example.com/"
+
+✅ Example: Verify URL Contains Text
+def test_verify_url_contains(page):
+    page.goto("https://example.com/success?user=123")
+    assert "success" in page.url
+
+
+Concept: New Tabs or Child Windows in Playwright
+When clicking on a link/button that opens a new tab or child window, the current page object does not automatically know about the newly opened page.
+
+We use python closure for this:
+
+def test_newChildWindowHandle(page: Page):
+    page.goto("https://rahulshettyacademy.com/loginpagePractise/")
+    assert "login" in page.url
+    with page.expect_popup() as newPage_info:
+        page.locator(".blinkingText").click()
+        newPage = newPage_info.value
+        #.blinkingText is a link that opens in a new tab or window.
+        #page.expect_popup() is a listener that waits for a popup (new page) to be opened because of a user gesture like .click().
+        #Inside the with block, we perform the click.
+        #Once the popup opens, the value gives us the new Page object — this is the child window.
+
+    assert "documents-request" in newPage.url
+    time.sleep(5)   
