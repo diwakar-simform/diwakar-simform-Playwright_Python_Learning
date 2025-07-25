@@ -1,3 +1,25 @@
+### CUCUMBER is a library which helps to write test cases in BDD
+Feature = "Test Suite"
+Scenario = "Test Case"
+
+Playwright trace-view: helps to identify each steps with screenshots, but it only works with headless
+CL: pytest -n 10 --tracing on --html=report.html
+
+Command to run marked tag test cases: "pytest -m tagname" for example "pytest -m smoke"
+@pytest.mark.smoke
+
+Let's suppose if you want to run your test cases based on the keyword you pass?
+here keyword means substring of your test case name
+pytest -k web_api
+Above web_api is Keyword Name
+
+
+command to run your test case multiple times: 
+@pytest.mark.parametrize('user_credentials', user_credentials_list)
+it will execute that many time as many item is present in user_credentials_list
+
+#RULE: For every page you must have one class in pageobject folder
+#NOTE: some time your test case will fail if because of ide issue like if you are in same directory you can directly name the file but it might get failed so you have to mention its parent folder or .
 CODEGEN TOOL in Playwright:
 Helps to automatically build all the code steps. Around 70-80% its follows standard way of code.
 

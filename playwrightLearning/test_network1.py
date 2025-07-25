@@ -1,5 +1,7 @@
 from playwright.sync_api import Page
 import time
+import pytest
+
 
 fakePayLoadOrderResponse = {"data":[],"message":"No Orders"}
 
@@ -10,6 +12,7 @@ def intercept_response(route):
     )
 
 # Task: is to verify in case where no order is present in the order history
+@pytest.mark.smoke
 def test_network1(page: Page):
     
     # Step1: Login
